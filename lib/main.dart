@@ -22,7 +22,7 @@ void main() async {
   );
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: const Splash(),
+    home: Splash(),
     routes: {
       'viewdetails': (context) => ProductDetails(),
       'savedwishlist': (context) => SavedWishlistDetail(),
