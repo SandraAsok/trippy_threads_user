@@ -12,6 +12,7 @@ import 'package:trippy_threads/core/utilities.dart';
 import 'package:trippy_threads/main.dart';
 import 'package:trippy_threads/presentation/cart/cart.dart';
 import 'package:trippy_threads/presentation/detail/productlist.dart';
+import 'package:trippy_threads/presentation/orders/orders.dart';
 import 'package:trippy_threads/presentation/wishlist/wishlist.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,7 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white, fontSize: 15)),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => OrderScreen()));
+              },
               leading: Icon(Icons.shopping_bag, color: Colors.white, size: 20),
               title: Text("Orders",
                   style: GoogleFonts.abhayaLibre(

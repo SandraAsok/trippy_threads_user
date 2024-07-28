@@ -55,21 +55,38 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     Future placeorder() async {
       try {
-        await FirebaseFirestore.instance.collection('orders').add({
-          'product_id': args['product_id'],
-          'image': args['image'],
-          'product_name': args['product_name'],
-          'description': args['description'],
-          'details': args['details'],
-          'totalPrice': args['totalPrice'],
-          'size': args['size'],
-          'address': args['address'],
-          'saturday': isSaturday,
-          'sunday': isSunday,
-          'payment': paymentmethod,
-          'placed_date': DateTime.now(),
-          'userId': FirebaseAuth.instance.currentUser!.email,
-        });
+        final userId = FirebaseAuth.instance.currentUser!.email;
+
+        // Fetch cart items
+        QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
+            .collection('cart')
+            .where('userId', isEqualTo: userId)
+            .get();
+        for (var cartDoc in cartSnapshot.docs) {
+          final cartItem = cartDoc.data() as Map<String, dynamic>;
+
+          await FirebaseFirestore.instance.collection('orders').add({
+            'product_id': cartItem['product_id'],
+            'quantity': args['quantity'][cartDoc.id] ?? "1",
+            'image': cartItem['image'],
+            'product_name': cartItem['product_name'],
+            'description': cartItem['description'],
+            'details': cartItem['details'],
+            'totalPrice': cartItem['price'],
+            'size': cartItem['size'],
+            'address': args['address'],
+            'saturday': isSaturday,
+            'sunday': isSunday,
+            'payment': paymentmethod,
+            'placed_date': DateTime.now(),
+            'userId': FirebaseAuth.instance.currentUser!.email,
+          });
+
+          for (QueryDocumentSnapshot doc in cartSnapshot.docs) {
+            await doc.reference.delete();
+          }
+        }
+
         Navigator.push(
             context,
             MaterialPageRoute(

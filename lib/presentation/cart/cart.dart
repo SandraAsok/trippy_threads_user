@@ -282,12 +282,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         onPressed: () {
                           Navigator.pushNamed(context, 'checkout', arguments: {
-                            'product_id': productId,
-                            'image': image,
-                            'product_name': name,
-                            'description': description,
-                            'details': details,
-                            'size': size,
+                            'quantity': selectedItems,
                             'totalPrice': total.toString(),
                             'address': addresslist.isEmpty
                                 ? "Add+New+Address+for delivery"

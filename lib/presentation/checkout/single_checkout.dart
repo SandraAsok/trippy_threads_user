@@ -18,7 +18,7 @@ class SingleCheckout extends StatefulWidget {
 }
 
 class _SingleCheckoutState extends State<SingleCheckout> {
-  String payment = "";
+  String? payment;
   String? paymentmethod;
   bool isSaturday = false;
   bool isSunday = false;
@@ -50,6 +50,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
     }
   }
 
+  String quantity = "1";
+  List<String> items = ['1', '2', '3', '4', '5'];
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
@@ -57,11 +59,14 @@ class _SingleCheckoutState extends State<SingleCheckout> {
       try {
         await FirebaseFirestore.instance.collection('orders').add({
           'product_id': args['product_id'],
+          'quantity': quantity,
           'image': args['image'],
           'product_name': args['product_name'],
           'description': args['description'],
           'details': args['details'],
-          'totalPrice': args['totalPrice'],
+          'totalPrice': paymentmethod == "razorpay"
+              ? "${args['totalPrice']}"
+              : "${int.parse(args['totalPrice']) * int.parse(quantity) + 50}",
           'size': args['size'],
           'address': args['address'],
           'saturday': isSaturday,
@@ -176,6 +181,43 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          "Please select the quantity you needed ?",
+                          style: GoogleFonts.abhayaLibre(
+                              fontSize: 20, color: Colors.white),
+                        ),
+                        Row(
+                          children: [
+                            Spacer(),
+                            Text(
+                              "select here => ",
+                              style: GoogleFonts.abhayaLibre(
+                                  fontSize: 20, color: Colors.white),
+                            ),
+                            minwidth,
+                            minwidth,
+                            minwidth,
+                            DropdownButton<String>(
+                              dropdownColor: Colors.black,
+                              iconEnabledColor: Colors.white,
+                              value: quantity,
+                              style: GoogleFonts.abhayaLibre(
+                                  fontSize: 25, color: Colors.white),
+                              items: items.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  quantity = newValue!;
+                                });
+                              },
+                            ),
+                            Spacer(),
+                          ],
+                        ),
+                        Text(
                           "can you recieve deliveries on weekends?",
                           style: GoogleFonts.abhayaLibre(
                               fontSize: 20, color: Colors.white),
@@ -186,6 +228,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                               children: [
                                 Row(
                                   children: [
+                                    Spacer(),
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
@@ -202,10 +245,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                       style: GoogleFonts.abhayaLibre(
                                           fontSize: 20, color: Colors.white),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
+                                    Spacer(),
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
@@ -222,6 +262,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                       style: GoogleFonts.abhayaLibre(
                                           fontSize: 20, color: Colors.white),
                                     ),
+                                    Spacer(),
                                   ],
                                 ),
                               ],
@@ -283,7 +324,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       ),
                       Spacer(),
                       Text(
-                        ": ₹ ${args['totalPrice']} /-",
+                        ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity)} /-",
                         style: GoogleFonts.abhayaLibre(
                             fontSize: 18, color: Colors.white),
                       ),
@@ -328,7 +369,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       Text(
                         paymentmethod == "razorpay"
                             ? "₹ ${args['totalPrice']} /-"
-                            : ": ₹ ${int.parse(args['totalPrice']) + 50} /-",
+                            : ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity) + 50} /-",
                         style: GoogleFonts.abhayaLibre(
                             fontSize: 18, color: Colors.white),
                       ),
@@ -341,13 +382,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (args['address'] != "Add+New+Address+for delivery") {
-                          if (paymentmethod == "razorpay") {
-                            checkout(int.parse(args['totalPrice']));
-                          } else {
-                            placeorder();
-                          }
-                        } else {
+                        if (payment == null) {
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -363,6 +398,15 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                               );
                             },
                           );
+                        } else {
+                          if (args['address'] !=
+                              "Add+New+Address+for delivery") {
+                            if (paymentmethod == "razorpay") {
+                              checkout(int.parse(args['totalPrice']));
+                            } else {
+                              placeorder();
+                            }
+                          }
                         }
                       },
                       style: ButtonStyle(
