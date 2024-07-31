@@ -313,28 +313,40 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
             Spacer(),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.disabled)) {
+                      return Colors.grey; // Disabled color
+                    }
+                    return Colors.blue; // Enabled color
+                  },
+                ),
               ),
-              onPressed: () {
-                log(args.toString());
-                Navigator.pushNamed(context, 'singlecheckout', arguments: {
-                  'image': args['image'],
-                  'product_id': args['product_id'],
-                  'product_name': args['product_name'],
-                  'description': args['description'],
-                  'details': args['details'],
-                  'totalPrice': args['price'].toString(),
-                  'size': selectedSize,
-                  'address': addresslist.isEmpty
-                      ? "Add+New+Address+for delivery"
-                      : addresslist[0],
-                  'userId': FirebaseAuth.instance.currentUser!.email,
-                });
-              },
+              onPressed: args['stock'] == 0
+                  ? null
+                  : () {
+                      log(args.toString());
+                      Navigator.pushNamed(context, 'singlecheckout',
+                          arguments: {
+                            'image': args['image'],
+                            'product_id': args['product_id'],
+                            'product_name': args['product_name'],
+                            'description': args['description'],
+                            'details': args['details'],
+                            'totalPrice': args['price'].toString(),
+                            'size': selectedSize,
+                            'address': addresslist.isEmpty
+                                ? "Add+New+Address+for delivery"
+                                : addresslist[0],
+                            'userId': FirebaseAuth.instance.currentUser!.email,
+                          });
+                    },
               child: Text(
-                "BUY NOW",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 18, color: Colors.white),
+                args['stock'] == 0 ? "Out of Stock" : "BUY NOW",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
             ),
             Spacer(),

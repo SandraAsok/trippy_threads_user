@@ -51,10 +51,31 @@ class _SingleCheckoutState extends State<SingleCheckout> {
   }
 
   String quantity = "1";
-  List<String> items = ['1', '2', '3', '4', '5'];
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
+    List<String> items = [];
+    getList() {
+      for (int i = 1; i <= args['stock']; i++) {
+        items.add(i.toString());
+      }
+    }
+
+    getList();
+    Future updateStock() async {
+      try {
+        await FirebaseFirestore.instance
+            .collection('products')
+            .doc(args['product_id'])
+            .update({
+          'stock': args['stock'] - int.parse(quantity),
+        });
+      } catch (e) {
+        log(e.toString());
+      }
+    }
+
     Future placeorder() async {
       try {
         await FirebaseFirestore.instance.collection('orders').add({
@@ -405,6 +426,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                               checkout(int.parse(args['totalPrice']));
                             } else {
                               placeorder();
+                              updateStock();
                             }
                           }
                         }

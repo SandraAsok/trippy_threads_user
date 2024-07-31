@@ -84,21 +84,29 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
           image: AssetImage("assets/welcome.webp"),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         )),
         child: Column(
           children: [
-            SizedBox(height: 200),
+            SizedBox(height: 300),
             Text(
-              "Trippy\n Threads",
-              style: GoogleFonts.abhayaLibre(
-                  fontSize: 50,
+              "Trippy\t\tThreads",
+              style: TextStyle(
+                  shadows: [
+                    Shadow(
+                      color: Colors.blueGrey,
+                      blurRadius: 10,
+                      offset: Offset(0, 10),
+                    ),
+                  ],
+                  fontSize: 60,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),

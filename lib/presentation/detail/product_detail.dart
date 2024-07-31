@@ -309,45 +309,59 @@ class _ProductDetailsState extends State<ProductDetails> {
             Spacer(),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.disabled)) {
+                      return Colors.grey; // Disabled color
+                    }
+                    return Colors.blueGrey; // Enabled color
+                  },
+                ),
               ),
-              onPressed: () {
-                if (selectedSize.isEmpty) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text("Please select a size"),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text("Go back"))
-                        ],
-                      );
+              onPressed: args['stock'] == 0
+                  ? null
+                  : () {
+                      if (selectedSize.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text("Please select a size"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Go back"))
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        Navigator.pushNamed(context, "singlecheckout",
+                            arguments: {
+                              'image': args['image'],
+                              'stock': args['stock'],
+                              'product_id': args['product_id'],
+                              'product_name': args['product_name'],
+                              'description': args['description'],
+                              'details': args['details'],
+                              'totalPrice': args['price'],
+                              'size': selectedSize,
+                              'address': addresslist.isEmpty
+                                  ? "Add+New+Address+for delivery"
+                                  : addresslist[0],
+                              'userId':
+                                  FirebaseAuth.instance.currentUser!.email,
+                            });
+                      }
                     },
-                  );
-                } else {
-                  Navigator.pushNamed(context, "singlecheckout", arguments: {
-                    'image': args['image'],
-                    'product_id': args['product_id'],
-                    'product_name': args['product_name'],
-                    'description': args['description'],
-                    'details': args['details'],
-                    'totalPrice': args['price'],
-                    'size': selectedSize,
-                    'address': addresslist.isEmpty
-                        ? "Add+New+Address+for delivery"
-                        : addresslist[0],
-                    'userId': FirebaseAuth.instance.currentUser!.email,
-                  });
-                }
-              },
               child: Text(
-                "BUY NOW",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 18, color: Colors.white),
+                args['stock'] == 0 ? "Out of Stock" : "BUY NOW",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
             ),
             Spacer(),

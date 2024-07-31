@@ -123,6 +123,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     'category': snap['category'],
                                     'colorcode': snap['colorcode'],
                                     'image': snap['image'],
+                                    'stock': snap['stock'],
                                   });
                             },
                             child: Container(

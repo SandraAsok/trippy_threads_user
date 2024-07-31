@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:developer';
 
@@ -32,66 +32,189 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     razorpay = Razorpay();
   }
 
-  void checkout(int price) async {
-    var options = {
-      'key': 'rzp_test_xMQq5wAwtsmsfE',
-      'amount': 100 * price,
-      'name': 'Trippy Threads PVT.Ltd',
-      'description': 'Trippy Threads PVT.Ltd',
-      'prefill': {
-        'contact': '8075190230',
-        'email': 'sandratrippythreads@razorpay.com',
-      }
-    };
-    try {
-      razorpay.open(options);
-    } catch (e) {
-      log(e.toString());
-    }
-  }
+  // void checkout(int price) async {
+  //   var options = {
+  //     'key': 'rzp_test_xMQq5wAwtsmsfE',
+  //     'amount': 100 * price,
+  //     'name': 'Trippy Threads PVT.Ltd',
+  //     'description': 'Trippy Threads PVT.Ltd',
+  //     'prefill': {
+  //       'contact': '8075190230',
+  //       'email': 'sandratrippythreads@razorpay.com',
+  //     }
+  //   };
+  //   try {
+  //     razorpay.open(options);
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    Future placeorder() async {
+
+    void checkout(int price) async {
+      final userId = FirebaseAuth.instance.currentUser!.email;
+      QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
+          .collection('cart')
+          .where('userId', isEqualTo: userId)
+          .get();
+
+      bool hasOutOfStockItems = false;
+
+      for (var cartDoc in cartSnapshot.docs) {
+        final cartItem = cartDoc.data() as Map<String, dynamic>;
+        final productId = cartItem['product_id'];
+        final cartQuantity = int.parse(args['quantity'][cartDoc.id] ?? "1");
+
+        DocumentSnapshot productDoc = await FirebaseFirestore.instance
+            .collection('products')
+            .doc(productId)
+            .get();
+
+        final productData = productDoc.data() as Map<String, dynamic>;
+        final currentStock = productData['stock'];
+
+        if (currentStock < cartQuantity) {
+          hasOutOfStockItems = true;
+          log('Product $productId is out of stock');
+          break;
+        }
+      }
+
+      if (hasOutOfStockItems) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                  "Some products are out of stock. Please update your cart."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Go back"),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        var options = {
+          'key': 'rzp_test_xMQq5wAwtsmsfE',
+          'amount': 100 * price,
+          'name': 'Trippy Threads PVT.Ltd',
+          'description': 'Trippy Threads PVT.Ltd',
+          'prefill': {
+            'contact': '8075190230',
+            'email': 'sandratrippythreads@razorpay.com',
+          }
+        };
+        try {
+          razorpay.open(options);
+        } catch (e) {
+          log(e.toString());
+        }
+      }
+    }
+
+    Future updateStock() async {
       try {
         final userId = FirebaseAuth.instance.currentUser!.email;
-
-        // Fetch cart items
         QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
             .collection('cart')
             .where('userId', isEqualTo: userId)
             .get();
+
         for (var cartDoc in cartSnapshot.docs) {
           final cartItem = cartDoc.data() as Map<String, dynamic>;
+          final productId = cartItem['product_id'];
+          final cartQuantity = int.parse(args['quantity'][cartDoc.id] ?? "1");
 
-          await FirebaseFirestore.instance.collection('orders').add({
-            'product_id': cartItem['product_id'],
-            'quantity': args['quantity'][cartDoc.id] ?? "1",
-            'image': cartItem['image'],
-            'product_name': cartItem['product_name'],
-            'description': cartItem['description'],
-            'details': cartItem['details'],
-            'totalPrice': cartItem['price'],
-            'size': cartItem['size'],
-            'address': args['address'],
-            'saturday': isSaturday,
-            'sunday': isSunday,
-            'payment': paymentmethod,
-            'placed_date': DateTime.now(),
-            'userId': FirebaseAuth.instance.currentUser!.email,
-          });
+          DocumentSnapshot productDoc = await FirebaseFirestore.instance
+              .collection('products')
+              .doc(productId)
+              .get();
 
-          for (QueryDocumentSnapshot doc in cartSnapshot.docs) {
-            await doc.reference.delete();
+          final productData = productDoc.data() as Map<String, dynamic>;
+          final currentStock = productData['stock'];
+
+          if (currentStock >= cartQuantity) {
+            // Check if stock is enough
+            await FirebaseFirestore.instance
+                .collection('products')
+                .doc(productId)
+                .update({
+              'stock': currentStock - cartQuantity,
+            });
+          } else {
+            log('Product $productId is out of stock');
+          }
+        }
+      } catch (e) {
+        log(e.toString());
+      }
+    }
+
+    Future placeorder() async {
+      try {
+        final userId = FirebaseAuth.instance.currentUser!.email;
+
+        QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
+            .collection('cart')
+            .where('userId', isEqualTo: userId)
+            .get();
+
+        for (var cartDoc in cartSnapshot.docs) {
+          final cartItem = cartDoc.data() as Map<String, dynamic>;
+          final productId = cartItem['product_id'];
+          final cartQuantity = int.parse(args['quantity'][cartDoc.id] ?? "1");
+
+          DocumentSnapshot productDoc = await FirebaseFirestore.instance
+              .collection('products')
+              .doc(productId)
+              .get();
+
+          final productData = productDoc.data() as Map<String, dynamic>;
+          final currentStock = productData['stock'];
+
+          if (currentStock >= cartQuantity) {
+            // Check if stock is enough
+            await FirebaseFirestore.instance.collection('orders').add({
+              'product_id': cartItem['product_id'],
+              'quantity': args['quantity'][cartDoc.id] ?? "1",
+              'image': cartItem['image'],
+              'product_name': cartItem['product_name'],
+              'description': cartItem['description'],
+              'details': cartItem['details'],
+              'totalPrice': cartItem['price'],
+              'size': cartItem['size'],
+              'address': args['address'],
+              'saturday': isSaturday,
+              'sunday': isSunday,
+              'payment': paymentmethod,
+              'placed_date': DateTime.now(),
+              'userId': userId,
+            });
+
+            await updateStock(); // Update stock after placing the order
+
+            for (QueryDocumentSnapshot doc in cartSnapshot.docs) {
+              await doc.reference.delete();
+            }
+          } else {
+            log('Product $productId is out of stock, skipping order.');
           }
         }
 
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OrderConfirmed(),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderConfirmed(),
+          ),
+        );
       } catch (e) {
         showDialog(
           context: context,
@@ -100,10 +223,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               content: Text("Something went wrong"),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("check later?"))
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Check later?"),
+                ),
               ],
             );
           },
@@ -111,9 +235,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       }
     }
 
+  
+
     void handlepaymentsuccess(PaymentSuccessResponse response) {
       log(response.toString());
       placeorder();
+      updateStock();
     }
 
     void handlepaymentError(PaymentFailureResponse response) {
@@ -357,6 +484,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             checkout(int.parse(args['totalPrice']));
                           } else {
                             placeorder();
+                            //  updateStock();
                           }
                         } else {
                           showDialog(
