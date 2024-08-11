@@ -240,10 +240,9 @@ class _AddAddressCartState extends State<AddAddressCart> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'checkout', arguments: {
-                    'address': address == ""
-                        ? "Add+New+Address+for delivery"
-                        : address,
+                    'address': address,
                     'totalPrice': args['totalPrice'],
+                    'quantity': args['quantity'],
                     'Items': args['Items'],
                   });
                 },

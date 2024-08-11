@@ -241,7 +241,10 @@ class _AddAddressSingleState extends State<AddAddressSingle> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, 'singlecheckout', arguments: {
-                    'address': address,
+                    'address': address == ""
+                        ? "Add+New+Address+for delivery"
+                        : address,
+                    'stock': args['stock'],
                     'image': args['image'],
                     'product_id': args['product_id'],
                     'product_name': args['product_name'],

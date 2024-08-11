@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:trippy_threads/core/utilities.dart';
 import 'package:trippy_threads/presentation/checkout/order_confirmed.dart';
@@ -25,6 +26,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   String additionalinstr = "";
   TextEditingController additional = TextEditingController();
   late Razorpay razorpay;
+  DateFormat outputFormat = DateFormat("dd/MM/yyyy");
 
   @override
   void initState() {
@@ -195,7 +197,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               'saturday': isSaturday,
               'sunday': isSunday,
               'payment': paymentmethod,
-              'placed_date': DateTime.now(),
+              'placed_date': outputFormat.format(DateTime.now()),
               'userId': userId,
             });
 
@@ -234,8 +236,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         );
       }
     }
-
-  
 
     void handlepaymentsuccess(PaymentSuccessResponse response) {
       log(response.toString());
@@ -302,6 +302,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   'Items': args['Items'],
                                   'totalPrice': args['totalPrice'],
                                   'address': args['address'],
+                                  'quantity': args['quantity'],
                                 });
                           },
                           icon: Icon(Icons.edit))

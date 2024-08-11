@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:trippy_threads/core/utilities.dart';
 import 'package:trippy_threads/presentation/checkout/order_confirmed.dart';
@@ -51,6 +52,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
   }
 
   String quantity = "1";
+  DateFormat outputFormat = DateFormat("dd/MM/yyyy");
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
           'saturday': isSaturday,
           'sunday': isSunday,
           'payment': paymentmethod,
-          'placed_date': DateTime.now(),
+          'placed_date': outputFormat.format(DateTime.now()),
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         Navigator.push(
@@ -181,6 +183,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                             Navigator.pushNamed(context, 'singleaddress',
                                 arguments: {
                                   'image': args['image'],
+                                  'stock': args['stock'],
                                   'product_id': args['product_id'],
                                   'product_name': args['product_name'],
                                   'description': args['description'],

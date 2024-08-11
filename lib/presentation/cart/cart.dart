@@ -126,8 +126,6 @@ class _CartScreenState extends State<CartScreen> {
             return Center(child: Text("Error: ${snapshot.error}"));
           }
 
-          allItemsOutOfStock = true;
-
           return Column(
             children: [
               Expanded(
@@ -170,6 +168,8 @@ class _CartScreenState extends State<CartScreen> {
                           bool isOutOfStock = quantities.isEmpty;
                           if (!isOutOfStock) {
                             allItemsOutOfStock = false;
+                          } else {
+                            allItemsOutOfStock = true;
                           }
 
                           return Stack(
