@@ -34,24 +34,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     razorpay = Razorpay();
   }
 
-  // void checkout(int price) async {
-  //   var options = {
-  //     'key': 'rzp_test_xMQq5wAwtsmsfE',
-  //     'amount': 100 * price,
-  //     'name': 'Trippy Threads PVT.Ltd',
-  //     'description': 'Trippy Threads PVT.Ltd',
-  //     'prefill': {
-  //       'contact': '8075190230',
-  //       'email': 'sandratrippythreads@razorpay.com',
-  //     }
-  //   };
-  //   try {
-  //     razorpay.open(options);
-  //   } catch (e) {
-  //     log(e.toString());
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
