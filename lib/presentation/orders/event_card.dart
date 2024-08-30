@@ -16,8 +16,8 @@ class EventCard extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Text(
           text,
-          style: GoogleFonts.abhayaLibre(
-              color: isPast ? Colors.white : Colors.blueGrey),
+          style:
+              GoogleFonts.acme(color: isPast ? Colors.black : Colors.blueGrey),
         ),
       ),
     );

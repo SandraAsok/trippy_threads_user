@@ -26,7 +26,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
           automaticallyImplyLeading: false,
           title: Text(
             "Wishlist & Collections",
-            style: GoogleFonts.abhayaLibre(color: Colors.white),
+            style: GoogleFonts.acme(color: Colors.black),
           ),
         ),
         backgroundColor: Colors.black,
@@ -63,13 +63,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                   'price': snap['price'],
                                   'size': snap['size'],
                                   'wishId': snap.id,
+                                  'stock': snap['stock'],
+                                  'category': snap['category'],
                                 });
                           },
                           child: Container(
                             height: 100,
                             width: 500,
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
+                                border: Border.all(color: Colors.black),
                                 borderRadius: BorderRadius.circular(25)),
                             child: Row(
                               children: [
@@ -94,14 +96,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           snap['product_name'],
                                           style: TextStyle(
                                               overflow: TextOverflow.ellipsis,
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontSize: 20),
                                         ),
                                         // Text(
                                         //   "₹ ${snap['price']}/-",
                                         //   style: TextStyle(
                                         //       overflow: TextOverflow.ellipsis,
-                                        //       color: Colors.white,
+                                        //       color: Colors.black,
                                         //       fontSize: 20),
                                         // ),
                                       ],
@@ -118,7 +120,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                               backgroundColor:
                                   MaterialStateProperty.all(Colors.black),
                               side: MaterialStateProperty.all(
-                                  BorderSide(color: Colors.white))),
+                                  BorderSide(color: Colors.black))),
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -145,7 +147,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                           },
                           icon: Icon(
                             Icons.favorite,
-                            color: Colors.white,
+                            color: Colors.black,
                           )),
                     ],
                   );

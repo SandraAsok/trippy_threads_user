@@ -82,13 +82,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       body: Column(
         children: [
           Spacer(),
           Text(
             "CREATE ACCOUNT",
-            style: GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+            style: GoogleFonts.acme(fontSize: 25, color: fontcolor),
           ),
           minheight,
           Padding(
@@ -96,20 +96,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: TextField(
               controller: email,
               keyboardType: TextInputType.emailAddress,
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: fontcolor),
               decoration: InputDecoration(
                 isDense: true,
                 labelText: "Email",
                 hintText: "Enter email address",
-                hintStyle: GoogleFonts.abhayaLibre(color: Colors.white),
-                labelStyle: GoogleFonts.abhayaLibre(color: Colors.white),
+                hintStyle: GoogleFonts.acme(color: fontcolor),
+                labelStyle: GoogleFonts.acme(color: fontcolor),
                 errorText: errormessage.isEmpty ? null : errormessage,
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.white)),
+                    borderSide: BorderSide(color: bordercolor)),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Colors.white)),
+                    borderSide: BorderSide(color: bordercolor)),
               ),
               onChanged: validateEmail,
             ),
@@ -121,21 +121,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               controller: pass,
               obscureText: _obscureText,
               keyboardType: TextInputType.visiblePassword,
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: fontcolor),
               cursorColor: Colors.blueGrey,
               decoration: InputDecoration(
                   focusColor: Colors.blueGrey,
                   labelText: "Password",
                   hintText: "Enter a strong password",
                   isDense: true,
-                  hintStyle: GoogleFonts.abhayaLibre(color: Colors.white),
-                  labelStyle: GoogleFonts.abhayaLibre(color: Colors.white),
+                  hintStyle: GoogleFonts.acme(color: fontcolor),
+                  labelStyle: GoogleFonts.acme(color: fontcolor),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: bordercolor)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: bordercolor)),
                   suffixIcon: IconButton(
                     icon: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off),
@@ -145,7 +145,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           minheight,
           minheight,
-          ElevatedButton(
+          MaterialButton(
             onPressed: () {
               validateEmail(email.text);
               if (errormessage.isEmpty) {
@@ -157,12 +157,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     builder: (context) => HomeScreen(),
                   ));
             },
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                minimumSize: MaterialStateProperty.all(Size(200, 50))),
+            color: buttonbg,
             child: Text(
               "Sign Up",
-              style: GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+              style: GoogleFonts.acme(fontSize: 25, color: buttonfont),
             ),
           ),
           minheight,
@@ -172,7 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Spacer(),
               Text(
                 "Already a User? ",
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
               ),
               TextButton(
                   onPressed: () => Navigator.push(
@@ -182,7 +180,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )),
                   child: Text(
                     "Sign In",
-                    style: GoogleFonts.abhayaLibre(
+                    style: GoogleFonts.acme(
                         color: Colors.lightBlueAccent, fontSize: 18),
                   )),
               Spacer(),

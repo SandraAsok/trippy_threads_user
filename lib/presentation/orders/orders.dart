@@ -40,7 +40,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   final snap = snapshot.data!.docs[index];
-                  DateTime placedDate = snap['placed_date'].toDate();
+                  DateTime placedDate =
+                      DateFormat('dd/MM/yyyy').parse(snap['placed_date']);
                   final expectedDeliveryDate = DateFormat('dd/MM/yyyy')
                       .format(placedDate.add(Duration(days: 7)));
 
@@ -52,15 +53,15 @@ class _OrderScreenState extends State<OrderScreen> {
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(snap['image'][0])),
-                          border: Border.all(color: Colors.white)),
+                          border: Border.all(color: Colors.black)),
                     ),
                     title: Text(
                       "Expected delivery on $expectedDeliveryDate",
-                      style: GoogleFonts.abhayaLibre(color: Colors.greenAccent),
+                      style: GoogleFonts.acme(color: Colors.greenAccent),
                     ),
                     subtitle: Text(
                       snap['product_name'],
-                      style: GoogleFonts.abhayaLibre(color: Colors.white),
+                      style: GoogleFonts.acme(color: Colors.black),
                     ),
                     trailing: IconButton(
                         onPressed: () {
@@ -73,7 +74,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         },
                         icon: Icon(
                           Icons.navigate_next,
-                          color: Colors.white,
+                          color: Colors.black,
                         )),
                   );
                 },

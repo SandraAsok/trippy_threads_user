@@ -84,6 +84,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
           'product_id': args['product_id'],
           'quantity': quantity,
           'image': args['image'],
+          'category': args['category'],
           'product_name': args['product_name'],
           'description': args['description'],
           'details': args['details'],
@@ -97,6 +98,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
           'payment': paymentmethod,
           'placed_date': outputFormat.format(DateTime.now()),
           'userId': FirebaseAuth.instance.currentUser!.email,
+          'phone': args['phone'],
+          'track': "pending",
         });
         Navigator.push(
             context,
@@ -170,11 +173,11 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         width: MediaQuery.of(context).size.width / 1.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.white),
+                            color: Colors.black),
                         child: Center(
                           child: Text(
                             args['address'].split("+").join("\n"),
-                            style: GoogleFonts.abhayaLibre(),
+                            style: GoogleFonts.acme(),
                           ),
                         ),
                       ),
@@ -187,6 +190,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                   'product_id': args['product_id'],
                                   'product_name': args['product_name'],
                                   'description': args['description'],
+                                  'category': args['category'],
                                   'details': args['details'],
                                   'totalPrice': args['totalPrice'],
                                   'size': args['size'],
@@ -206,26 +210,26 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       children: [
                         Text(
                           "Please select the quantity you needed ?",
-                          style: GoogleFonts.abhayaLibre(
-                              fontSize: 20, color: Colors.white),
+                          style: GoogleFonts.acme(
+                              fontSize: 20, color: Colors.black),
                         ),
                         Row(
                           children: [
                             Spacer(),
                             Text(
                               "select here => ",
-                              style: GoogleFonts.abhayaLibre(
-                                  fontSize: 20, color: Colors.white),
+                              style: GoogleFonts.acme(
+                                  fontSize: 20, color: Colors.black),
                             ),
                             minwidth,
                             minwidth,
                             minwidth,
                             DropdownButton<String>(
                               dropdownColor: Colors.black,
-                              iconEnabledColor: Colors.white,
+                              iconEnabledColor: Colors.black,
                               value: quantity,
-                              style: GoogleFonts.abhayaLibre(
-                                  fontSize: 25, color: Colors.white),
+                              style: GoogleFonts.acme(
+                                  fontSize: 25, color: Colors.black),
                               items: items.map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -243,8 +247,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         ),
                         Text(
                           "can you recieve deliveries on weekends?",
-                          style: GoogleFonts.abhayaLibre(
-                              fontSize: 20, color: Colors.white),
+                          style: GoogleFonts.acme(
+                              fontSize: 20, color: Colors.black),
                         ),
                         Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -256,7 +260,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.white),
+                                      side: BorderSide(color: Colors.black),
                                       value: isSaturday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -266,14 +270,14 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     ),
                                     Text(
                                       "Saturday",
-                                      style: GoogleFonts.abhayaLibre(
-                                          fontSize: 20, color: Colors.white),
+                                      style: GoogleFonts.acme(
+                                          fontSize: 20, color: Colors.black),
                                     ),
                                     Spacer(),
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.white),
+                                      side: BorderSide(color: Colors.black),
                                       value: isSunday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -283,8 +287,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     ),
                                     Text(
                                       "Sunday",
-                                      style: GoogleFonts.abhayaLibre(
-                                          fontSize: 20, color: Colors.white),
+                                      style: GoogleFonts.acme(
+                                          fontSize: 20, color: Colors.black),
                                     ),
                                     Spacer(),
                                   ],
@@ -297,15 +301,14 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "SELECT PAYMENT METHOD",
-                    style: GoogleFonts.abhayaLibre(
-                        color: Colors.white, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
                   ),
                 ),
                 RadioListTile(
                   value: 'Pay with Razorpay',
                   title: Text(
                     "pay with Razorpay",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -319,7 +322,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   value: 'Cash on Delivery',
                   title: Text(
                     "cash on Delivery",
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Colors.black),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -333,8 +336,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     "ORDER SUMMARY",
-                    style: GoogleFonts.abhayaLibre(
-                        color: Colors.white, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
                   ),
                 ),
                 Padding(
@@ -343,14 +345,14 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                     children: [
                       Text(
                         "Total Price",
-                        style: GoogleFonts.abhayaLibre(
-                            fontSize: 18, color: Colors.white),
+                        style:
+                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
                       ),
                       Spacer(),
                       Text(
                         ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity)} /-",
-                        style: GoogleFonts.abhayaLibre(
-                            fontSize: 18, color: Colors.white),
+                        style:
+                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
                       ),
                     ],
                   ),
@@ -361,19 +363,19 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                     children: [
                       Text(
                         "Delivery Charge",
-                        style: GoogleFonts.abhayaLibre(
+                        style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.white
+                                ? Colors.black
                                 : Colors.red),
                       ),
                       Spacer(),
                       Text(
                         paymentmethod == "razorpay" ? "₹ 0 /-" : ": ₹ 50 /-",
-                        style: GoogleFonts.abhayaLibre(
+                        style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.white
+                                ? Colors.black
                                 : Colors.red),
                       ),
                     ],
@@ -386,16 +388,16 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                     children: [
                       Text(
                         "Order Total",
-                        style: GoogleFonts.abhayaLibre(
-                            fontSize: 18, color: Colors.white),
+                        style:
+                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
                       ),
                       Spacer(),
                       Text(
                         paymentmethod == "razorpay"
                             ? "₹ ${args['totalPrice']} /-"
                             : ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity) + 50} /-",
-                        style: GoogleFonts.abhayaLibre(
-                            fontSize: 18, color: Colors.white),
+                        style:
+                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
                       ),
                     ],
                   ),
@@ -442,8 +444,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         paymentmethod == "razorpay"
                             ? "Proceed To Pay"
                             : "Place Order",
-                        style: GoogleFonts.abhayaLibre(
-                            fontSize: 20, color: Colors.white),
+                        style:
+                            GoogleFonts.acme(fontSize: 20, color: Colors.black),
                       ),
                     ),
                   ),

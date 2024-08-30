@@ -60,6 +60,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   List addresslist = [];
+  List phonelist = [];
   Future fetchAddress() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -67,8 +68,10 @@ class _CartScreenState extends State<CartScreen> {
           .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.email)
           .get();
       List address = querySnapshot.docs.map((doc) => doc['address']).toList();
+      List phone = querySnapshot.docs.map((doc) => doc['phone']).toList();
       setState(() {
         addresslist = address;
+        phonelist = phone;
       });
     } catch (e) {
       log('Error fetching data: $e');
@@ -109,7 +112,7 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: Colors.black,
         title: Text(
           "Cart & Collections",
-          style: GoogleFonts.abhayaLibre(color: Colors.white),
+          style: GoogleFonts.acme(color: Colors.black),
         ),
       ),
       body: StreamBuilder(
@@ -184,18 +187,20 @@ class _CartScreenState extends State<CartScreen> {
                                           'product_id': snap['product_id'],
                                           'product_name': snap['product_name'],
                                           'description': snap['description'],
+                                          'category': snap['category'],
                                           'details': snap['details'],
                                           'image': snap['image'],
                                           'price': snap['price'],
                                           'size': snap['size'],
                                           'cartId': snap.id,
+                                          'stock': snap['stock'],
                                         });
                                   },
                                   child: Container(
                                     height: 100,
                                     width: 500,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
+                                      border: Border.all(color: Colors.black),
                                       borderRadius: BorderRadius.circular(25),
                                     ),
                                     child: Row(
@@ -226,7 +231,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   style: TextStyle(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                     fontSize: 20,
                                                   ),
                                                 ),
@@ -237,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   style: TextStyle(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    color: Colors.white,
+                                                    color: Colors.black,
                                                     fontSize: 20,
                                                   ),
                                                 ),
@@ -250,11 +255,11 @@ class _CartScreenState extends State<CartScreen> {
                                           minwidth,
                                           DropdownButton<String>(
                                             dropdownColor: Colors.black,
-                                            iconEnabledColor: Colors.white,
+                                            iconEnabledColor: Colors.black,
                                             value: selectedItems[itemId] ?? "1",
-                                            style: GoogleFonts.abhayaLibre(
+                                            style: GoogleFonts.acme(
                                                 fontSize: 25,
-                                                color: Colors.white),
+                                                color: Colors.black),
                                             items:
                                                 quantities.map((String value) {
                                               return DropdownMenuItem<String>(
@@ -291,7 +296,7 @@ class _CartScreenState extends State<CartScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.black),
                                     side: MaterialStateProperty.all(
-                                        BorderSide(color: Colors.white))),
+                                        BorderSide(color: Colors.black))),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
@@ -321,7 +326,7 @@ class _CartScreenState extends State<CartScreen> {
                                 },
                                 icon: Icon(
                                   Icons.delete,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                             ],
@@ -339,11 +344,11 @@ class _CartScreenState extends State<CartScreen> {
                     child: ListTile(
                       title: Text(
                         "Total : ",
-                        style: GoogleFonts.abhayaLibre(fontSize: 20),
+                        style: GoogleFonts.acme(fontSize: 20),
                       ),
                       subtitle: Text(
                         "₹ ${total.toStringAsFixed(2)} /-",
-                        style: GoogleFonts.abhayaLibre(
+                        style: GoogleFonts.acme(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       trailing: ElevatedButton(
@@ -370,12 +375,15 @@ class _CartScreenState extends State<CartScreen> {
                                       'address': addresslist.isEmpty
                                           ? "Add+New+Address+for delivery"
                                           : addresslist[0],
+                                      'phone': phonelist.isEmpty
+                                          ? " "
+                                          : phonelist[0],
                                     });
                               },
                         child: Text(
                           "CHECKOUT",
-                          style: GoogleFonts.abhayaLibre(
-                              fontSize: 16, color: Colors.white),
+                          style: GoogleFonts.acme(
+                              fontSize: 16, color: Colors.black),
                         ),
                       ),
                     ),

@@ -37,7 +37,7 @@ class _OrderConfirmedState extends State<OrderConfirmed> {
             },
             child: Text(
               "Continue Shopping",
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: Colors.black),
             ),
           ),
         ],

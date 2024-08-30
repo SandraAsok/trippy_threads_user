@@ -25,6 +25,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
   List addresslist = [];
+  List phonelist = [];
   Future fetchAddress() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -32,8 +33,10 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
           .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.email)
           .get();
       List address = querySnapshot.docs.map((doc) => doc['address']).toList();
+      List phone = querySnapshot.docs.map((doc) => doc['phone']).toList();
       setState(() {
         addresslist = address;
+        phonelist = phone;
       });
     } catch (e) {
       log('Error fetching data: $e');
@@ -87,6 +90,8 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
           'details': args['details'],
           'price': int.parse(args['price']),
           'size': selectedSize,
+          'stock': args['stock'],
+          'category': args['category'],
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         setState(() {
@@ -107,6 +112,8 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
           'details': args['details'],
           'price': args['price'],
           'size': selectedSize,
+          'stock': args['stock'],
+          'category': args['category'],
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         setState(() {
@@ -120,7 +127,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
     checkCartstate();
     checkWishliststate();
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -155,10 +162,9 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                 IconButton.filled(
                     highlightColor: Colors.blueGrey,
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(buttonfont),
                         side: MaterialStateProperty.all(
-                            BorderSide(color: Colors.white))),
+                            BorderSide(color: buttonbg))),
                     onPressed: () async {
                       if (isWish == false) {
                         if (selectedSize.isEmpty) {
@@ -193,7 +199,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
             minheight,
             Text(
               args['product_name'],
-              style: GoogleFonts.abhayaLibre(
+              style: GoogleFonts.acme(
                 color: Colors.greenAccent,
                 fontSize: 22,
               ),
@@ -201,18 +207,18 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
             minheight,
             Text(
               args['description'],
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: fontcolor),
             ),
             minheight,
             Row(children: [
               Spacer(),
               Text(
                 "Price : ",
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
               ),
               Text(
                 "₹ ${args['price']}/-",
-                style: GoogleFonts.abhayaLibre(color: Colors.lightBlueAccent),
+                style: GoogleFonts.acme(color: Colors.lightBlueAccent),
               ),
               Spacer(),
             ]),
@@ -231,7 +237,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(60, 60)),
                       shape: MaterialStateProperty.all(CircleBorder(
-                          side: BorderSide(color: Colors.white, width: 2.0))),
+                          side: BorderSide(color: buttonbg, width: 2.0))),
                       backgroundColor: MaterialStateProperty.all(
                           selectedSize == size
                               ? Colors.blueGrey
@@ -239,7 +245,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                     ),
                     child: Text(
                       size,
-                      style: GoogleFonts.abhayaLibre(color: Colors.white),
+                      style: GoogleFonts.acme(color: buttonfont),
                     ),
                   ),
                 );
@@ -248,13 +254,13 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
             minheight,
             Text(
               "Product Details : ",
-              style: GoogleFonts.abhayaLibre(color: Colors.greenAccent),
+              style: GoogleFonts.acme(color: Colors.greenAccent),
             ),
             minheight,
             Text(
               args['details'].split("+").join("\n"),
-              style: GoogleFonts.abhayaLibre(
-                color: Colors.white,
+              style: GoogleFonts.acme(
+                color: fontcolor,
                 fontSize: 15,
               ),
             ),
@@ -265,7 +271,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
       bottomSheet: Container(
         height: 100,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Colors.black),
+        decoration: BoxDecoration(color: bgcolor),
         child: Row(
           children: [
             Spacer(),
@@ -306,22 +312,12 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
               },
               child: Text(
                 isCart ? "Remove" : "Add to Cart",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 18, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 18, color: buttonfont),
               ),
             ),
             Spacer(),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.disabled)) {
-                      return Colors.grey; // Disabled color
-                    }
-                    return Colors.blue; // Enabled color
-                  },
-                ),
-              ),
+            MaterialButton(
+              color: args['stock'] == 0 ? Colors.grey : buttonbg,
               onPressed: args['stock'] == 0
                   ? null
                   : () {
@@ -330,6 +326,8 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                           arguments: {
                             'image': args['image'],
                             'product_id': args['product_id'],
+                            'stock': args['stock'],
+                            'category': args['category'],
                             'product_name': args['product_name'],
                             'description': args['description'],
                             'details': args['details'],
@@ -338,6 +336,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                             'address': addresslist.isEmpty
                                 ? "Add+New+Address+for delivery"
                                 : addresslist[0],
+                            'phone': phonelist.isEmpty ? " " : phonelist[0],
                             'userId': FirebaseAuth.instance.currentUser!.email,
                           });
                     },
@@ -345,7 +344,7 @@ class _SavedCartDetailState extends State<SavedCartDetail> {
                 args['stock'] == 0 ? "Out of Stock" : "BUY NOW",
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: args['stock'] == 0 ? Colors.grey : buttonfont,
                 ),
               ),
             ),

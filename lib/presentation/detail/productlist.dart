@@ -35,13 +35,13 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       appBar: AppBar(
         backgroundColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Text(
           widget.item.toUpperCase(),
-          style: GoogleFonts.abhayaLibre(color: Colors.white),
+          style: GoogleFonts.acme(color: fontcolor),
         ),
         centerTitle: true,
       ),
@@ -68,7 +68,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                         width: 90,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(60),
-                            border: Border.all(color: Colors.white, width: 2),
+                            border: Border.all(color: buttonbg, width: 2),
                             image: DecorationImage(
                                 fit: BoxFit.fill,
                                 image: AssetImage(categorypic[index]))),
@@ -95,8 +95,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return LinearProgressIndicator(
-                          backgroundColor: Colors.black,
-                          color: Colors.black,
+                          backgroundColor: bgcolor,
+                          color: buttonbg,
                         );
                       } else if (snapshot.hasError) {
                         log("Errorrrrr ::: ${snapshot.error}");
@@ -129,7 +129,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             child: Container(
                               height: 400,
                               decoration: BoxDecoration(
-                                color: Colors.black,
+                                color: buttonbg,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -166,15 +166,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                               fontFamily: GoogleFonts
                                                   .abhayaLibre
                                                   .toString(),
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               overflow: TextOverflow.ellipsis),
                                         ),
                                       ),
                                       Spacer(),
                                       Text(
                                         "₹ ${snap['price']}/-",
-                                        style: GoogleFonts.abhayaLibre(
-                                          color: Colors.white,
+                                        style: GoogleFonts.acme(
+                                          color: Colors.black,
                                         ),
                                       )
                                     ],

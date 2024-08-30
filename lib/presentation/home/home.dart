@@ -70,22 +70,22 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.black,
+        iconTheme: IconThemeData(color: iconcolor),
+        backgroundColor: bgcolor,
         // centerTitle: true,
         title: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Text(
             "TRIPY\t\t\tTHREADS",
-            style: GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+            style: GoogleFonts.acme(fontSize: 25, color: fontcolor),
           ),
         ),
       ),
       endDrawer: Drawer(
-        backgroundColor: Colors.black,
+        backgroundColor: bgcolor,
         child: ListView(
           children: [
             ListTile(
@@ -93,69 +93,61 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => CartScreen()));
               },
-              leading: Icon(Icons.shopping_cart, color: Colors.white, size: 20),
+              leading: Icon(Icons.shopping_cart, color: iconcolor, size: 20),
               title: Text("Cart",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => WishlistScreen()));
               },
-              leading: Icon(Icons.favorite, color: Colors.white, size: 20),
+              leading: Icon(Icons.favorite, color: iconcolor, size: 20),
               title: Text("Wishlist",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => OrderScreen()));
               },
-              leading: Icon(Icons.shopping_bag, color: Colors.white, size: 20),
+              leading: Icon(Icons.shopping_bag, color: iconcolor, size: 20),
               title: Text("Orders",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             Divider(),
             Divider(),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.privacy_tip, color: Colors.white, size: 20),
+              leading: Icon(Icons.privacy_tip, color: iconcolor, size: 20),
               title: Text("Privacy Policy",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.policy, color: Colors.white, size: 20),
+              leading: Icon(Icons.policy, color: iconcolor, size: 20),
               title: Text("Terms and Conditions",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () {},
-              leading:
-                  Icon(Icons.remove_red_eye, color: Colors.white, size: 20),
+              leading: Icon(Icons.remove_red_eye, color: iconcolor, size: 20),
               title: Text("About",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             Divider(),
             Divider(),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.settings, color: Colors.white),
-              title: Text("Settings",
-                  style: GoogleFonts.abhayaLibre(color: Colors.white)),
+              leading: Icon(Icons.settings, color: iconcolor),
+              title:
+                  Text("Settings", style: GoogleFonts.acme(color: fontcolor)),
             ),
             ListTile(
               onTap: () {},
-              leading: Icon(Icons.help_center, color: Colors.white, size: 20),
+              leading: Icon(Icons.help_center, color: iconcolor, size: 20),
               title: Text("Help Center",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () async {
@@ -174,10 +166,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   log('$e');
                 }
               },
-              leading: Icon(Icons.logout, color: Colors.white, size: 20),
+              leading: Icon(Icons.logout, color: iconcolor, size: 20),
               title: Text("Log out",
-                  style: GoogleFonts.abhayaLibre(
-                      color: Colors.white, fontSize: 15)),
+                  style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
           ],
         ),
@@ -211,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
             minheight,
             Text(
               "Unleash Your Inner Psyche:\n \t Wear the Vibe",
-              style: GoogleFonts.abhayaLibre(color: Colors.white, fontSize: 20),
+              style: GoogleFonts.acme(color: fontcolor, fontSize: 20),
             ),
             minheight,
             Padding(
@@ -245,8 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Center(
                           child: Text(
                             gridtext[index].toString().toUpperCase(),
-                            style: GoogleFonts.abhayaLibre(
-                                fontSize: 25, color: Colors.white),
+                            style: GoogleFonts.acme(
+                                fontSize: 25, color: fontcolor),
                           ),
                         ),
                       ),

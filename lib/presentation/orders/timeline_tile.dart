@@ -30,7 +30,7 @@ class _TimelineTileWidgetState extends State<TimelineTileWidget> {
         beforeLineStyle:
             LineStyle(color: widget.isPast ? Colors.green : Colors.grey),
         indicatorStyle: IndicatorStyle(
-            color: widget.isPast ? Colors.white : Colors.blueGrey,
+            color: widget.isPast ? Colors.black : Colors.blueGrey,
             width: 15,
             iconStyle: IconStyle(
                 iconData: Icons.done, color: Colors.black, fontSize: 16)),

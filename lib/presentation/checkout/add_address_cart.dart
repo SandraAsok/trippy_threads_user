@@ -34,6 +34,7 @@ class _AddAddressCartState extends State<AddAddressCart> {
         'address':
             "${name.text}+${contact.text}+${house.text}(H)+${street.text}+${city.text}+${district.text}+${pincode.text}",
         'userId': FirebaseAuth.instance.currentUser!.email,
+        'phone': contact.text,
       });
     } catch (e) {
       log(e.toString());
@@ -66,10 +67,10 @@ class _AddAddressCartState extends State<AddAddressCart> {
                     itemBuilder: (context, index) {
                       final snap = snapshot.data!.docs[index];
                       return RadioListTile(
-                        value: snap['address'],
+                        value: snap['address'] + "*" + snap['phone'],
                         title: Text(
                           snap['address'].split("+").join("\n"),
-                          style: GoogleFonts.abhayaLibre(),
+                          style: GoogleFonts.acme(),
                         ),
                         groupValue: address,
                         onChanged: (value) {
@@ -87,7 +88,7 @@ class _AddAddressCartState extends State<AddAddressCart> {
               childrenPadding: EdgeInsets.all(10.0),
               title: Text(
                 "Add Address",
-                style: GoogleFonts.abhayaLibre(color: Colors.blueGrey),
+                style: GoogleFonts.acme(color: Colors.blueGrey),
               ),
               trailing: Icon(Icons.arrow_drop_down),
               backgroundColor: Colors.blue[50],
@@ -97,12 +98,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: name,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'Name',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -111,12 +112,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   child: TextField(
                     controller: contact,
                     maxLength: 10,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'Contact Number',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -124,12 +125,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: house,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'House Name/ House Number',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -137,12 +138,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: street,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'Street Name',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -150,12 +151,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: city,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'City',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -163,12 +164,12 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: district,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     decoration: InputDecoration(
                       labelText: 'District',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -176,14 +177,14 @@ class _AddAddressCartState extends State<AddAddressCart> {
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
                     controller: pincode,
-                    style: GoogleFonts.abhayaLibre(),
+                    style: GoogleFonts.acme(),
                     maxLength: 6,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: 'Pin code',
                       focusedBorder: OutlineInputBorder(),
-                      labelStyle: GoogleFonts.abhayaLibre(
-                          color: Colors.black, fontSize: 18),
+                      labelStyle:
+                          GoogleFonts.acme(color: Colors.black, fontSize: 18),
                     ),
                   ),
                 ),
@@ -229,7 +230,7 @@ class _AddAddressCartState extends State<AddAddressCart> {
                             MaterialStateProperty.all(Colors.blueGrey)),
                     child: Text(
                       "Save Address",
-                      style: GoogleFonts.abhayaLibre(color: Colors.white),
+                      style: GoogleFonts.acme(color: Colors.black),
                     ),
                   ),
                 ),
@@ -239,8 +240,14 @@ class _AddAddressCartState extends State<AddAddressCart> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
+                  final addresses = address!.split('*');
+                  String selectedaddress = addresses[0];
+                  String phone = addresses[1];
                   Navigator.pushNamed(context, 'checkout', arguments: {
-                    'address': address,
+                    'address': address == ""
+                        ? "Add+New+Address+for delivery"
+                        : selectedaddress,
+                    'phone': phone,
                     'totalPrice': args['totalPrice'],
                     'quantity': args['quantity'],
                     'Items': args['Items'],
@@ -252,7 +259,7 @@ class _AddAddressCartState extends State<AddAddressCart> {
                         MaterialStateProperty.all(Colors.blueGrey)),
                 child: Text(
                   "Done",
-                  style: GoogleFonts.abhayaLibre(color: Colors.white),
+                  style: GoogleFonts.acme(color: Colors.black),
                 ),
               ),
             )

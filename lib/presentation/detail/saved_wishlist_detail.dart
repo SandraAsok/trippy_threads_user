@@ -25,6 +25,7 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
   List addresslist = [];
+  List phonelist = [];
   Future fetchAddress() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -32,8 +33,10 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
           .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.email)
           .get();
       List address = querySnapshot.docs.map((doc) => doc['address']).toList();
+      List phone = querySnapshot.docs.map((doc) => doc['phone']).toList();
       setState(() {
         addresslist = address;
+        phonelist = phone;
       });
     } catch (e) {
       log('Error fetching data: $e');
@@ -87,6 +90,8 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
           'details': args['details'],
           'price': int.parse(args['price']),
           'size': selectedSize,
+          'stock': args['stock'],
+          'category': args['category'],
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         setState(() {
@@ -107,6 +112,8 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
           'details': args['details'],
           'price': args['price'],
           'size': selectedSize,
+          'stock': args['stock'],
+          'category': args['category'],
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         setState(() {
@@ -120,7 +127,7 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
     checkCartstate();
     checkWishliststate();
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -158,7 +165,7 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.black),
                         side: MaterialStateProperty.all(
-                            BorderSide(color: Colors.white))),
+                            BorderSide(color: Colors.black))),
                     onPressed: () async {
                       if (isWish == false) {
                         if (selectedSize.isEmpty) {
@@ -194,7 +201,7 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
             minheight,
             Text(
               args['product_name'],
-              style: GoogleFonts.abhayaLibre(
+              style: GoogleFonts.acme(
                 color: Colors.greenAccent,
                 fontSize: 22,
               ),
@@ -202,18 +209,18 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
             minheight,
             Text(
               args['description'],
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: fontcolor),
             ),
             minheight,
             Row(children: [
               Spacer(),
               Text(
                 "Price : ",
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
               ),
               Text(
                 "₹ ${args['price']}/-",
-                style: GoogleFonts.abhayaLibre(color: Colors.lightBlueAccent),
+                style: GoogleFonts.acme(color: Colors.lightBlueAccent),
               ),
               Spacer(),
             ]),
@@ -232,15 +239,13 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(60, 60)),
                       shape: MaterialStateProperty.all(CircleBorder(
-                          side: BorderSide(color: Colors.white, width: 2.0))),
+                          side: BorderSide(color: buttonbg, width: 2.0))),
                       backgroundColor: MaterialStateProperty.all(
-                          selectedSize == size
-                              ? Colors.blueGrey
-                              : Colors.black),
+                          selectedSize == size ? Colors.blueGrey : buttonbg),
                     ),
                     child: Text(
                       size,
-                      style: GoogleFonts.abhayaLibre(color: Colors.white),
+                      style: GoogleFonts.acme(color: Colors.black),
                     ),
                   ),
                 );
@@ -249,13 +254,13 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
             minheight,
             Text(
               "Product Details : ",
-              style: GoogleFonts.abhayaLibre(color: Colors.greenAccent),
+              style: GoogleFonts.acme(color: Colors.greenAccent),
             ),
             minheight,
             Text(
               args['details'].split("+").join("\n"),
-              style: GoogleFonts.abhayaLibre(
-                color: Colors.white,
+              style: GoogleFonts.acme(
+                color: fontcolor,
                 fontSize: 15,
               ),
             ),
@@ -270,10 +275,8 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
         child: Row(
           children: [
             Spacer(),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-              ),
+            MaterialButton(
+              color: buttonbg,
               onPressed: () async {
                 if (isCart == false) {
                   if (selectedSize.isEmpty) {
@@ -302,22 +305,12 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
               },
               child: Text(
                 isCart ? "Go to Cart" : "Add to Cart",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 18, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 18, color: buttonfont),
               ),
             ),
             Spacer(),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.disabled)) {
-                      return Colors.grey; // Disabled color
-                    }
-                    return Colors.blue; // Enabled color
-                  },
-                ),
-              ),
+            MaterialButton(
+              color: args['stock'] == 0 ? Colors.grey : buttonbg,
               onPressed: args['stock'] == 0
                   ? null
                   : () {
@@ -325,6 +318,8 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
                           arguments: {
                             'image': args['image'],
                             'product_id': args['product_id'],
+                            'stock': args['stock'],
+                            'category': args['category'],
                             'product_name': args['product_name'],
                             'description': args['description'],
                             'details': args['details'],
@@ -333,14 +328,15 @@ class _SavedWishlistDetailState extends State<SavedWishlistDetail> {
                             'address': addresslist.isEmpty
                                 ? "Add+New+Address+for delivery"
                                 : addresslist[0],
+                            'phone': phonelist.isEmpty ? " " : phonelist[0],
                             'userId': FirebaseAuth.instance.currentUser!.email,
                           });
                     },
               child: Text(
-                args['stock'] == 0 ? "Out of Stock" : "BUY NOW",
+                args['stock'] == 0 ? "Out of Stock" : "Buy Now",
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: args['stock'] == 0 ? Colors.grey : buttonfont,
                 ),
               ),
             ),

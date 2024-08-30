@@ -15,7 +15,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: bgcolor,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -29,28 +29,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   labelText: "Verification email",
                   hintText: "Enter Verification email",
                   isDense: true,
-                  hintStyle: GoogleFonts.abhayaLibre(color: Colors.white),
-                  labelStyle: GoogleFonts.abhayaLibre(color: Colors.white),
+                  hintStyle: GoogleFonts.acme(color: fontcolor),
+                  labelStyle: GoogleFonts.acme(color: fontcolor),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: buttonbg)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.white)),
+                      borderSide: BorderSide(color: buttonbg)),
                 ),
               ),
             ),
             minheight,
             minheight,
-            ElevatedButton(
+            MaterialButton(
               onPressed: () {},
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                  minimumSize: MaterialStateProperty.all(Size(150, 40))),
+              color: buttonbg,
               child: Text(
                 "Submit",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 25, color: buttonfont),
               ),
             ),
           ],

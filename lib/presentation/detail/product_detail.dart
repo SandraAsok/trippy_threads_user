@@ -26,6 +26,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final List<String> sizes = ['S', 'M', 'L', 'XL', 'XXL'];
 
   List addresslist = [];
+  List phonelist = [];
   Future fetchAddress() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -33,8 +34,10 @@ class _ProductDetailsState extends State<ProductDetails> {
           .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.email)
           .get();
       List address = querySnapshot.docs.map((doc) => doc['address']).toList();
+      List phone = querySnapshot.docs.map((doc) => doc['phone']).toList();
       setState(() {
         addresslist = address;
+        phonelist = phone;
       });
     } catch (e) {
       log('Error fetching data: $e');
@@ -58,10 +61,12 @@ class _ProductDetailsState extends State<ProductDetails> {
           'product_id': args['product_id'],
           'product_name': args['product_name'],
           'description': args['description'],
+          'category': args['category'],
           'details': args['details'],
           'price': int.parse(args['price']),
           'size': selectedSize,
           'userId': FirebaseAuth.instance.currentUser!.email,
+          'stock': args['stock'],
         });
         setState(() {
           isCart = true;
@@ -78,9 +83,11 @@ class _ProductDetailsState extends State<ProductDetails> {
           'product_id': args['product_id'],
           'product_name': args['product_name'],
           'description': args['description'],
+          'category': args['category'],
           'details': args['details'],
           'price': args['price'],
           'size': selectedSize,
+          'stock': args['stock'],
           'userId': FirebaseAuth.instance.currentUser!.email,
         });
         setState(() {
@@ -156,10 +163,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                 IconButton.filled(
                     highlightColor: Colors.blueGrey,
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
+                        backgroundColor: MaterialStateProperty.all(black),
                         side: MaterialStateProperty.all(
-                            BorderSide(color: Colors.white))),
+                            BorderSide(color: buttonbg))),
                     onPressed: () {
                       if (isWish == false) {
                         if (selectedSize.isEmpty) {
@@ -194,7 +200,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             minheight,
             Text(
               args['product_name'],
-              style: GoogleFonts.abhayaLibre(
+              style: GoogleFonts.acme(
                 color: Colors.greenAccent,
                 fontSize: 22,
               ),
@@ -202,18 +208,18 @@ class _ProductDetailsState extends State<ProductDetails> {
             minheight,
             Text(
               args['description'],
-              style: GoogleFonts.abhayaLibre(color: Colors.white),
+              style: GoogleFonts.acme(color: fontcolor),
             ),
             minheight,
             Row(children: [
               Spacer(),
               Text(
                 "Price : ",
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
               ),
               Text(
                 "₹ ${args['price']}/-",
-                style: GoogleFonts.abhayaLibre(color: Colors.lightBlueAccent),
+                style: GoogleFonts.acme(color: Colors.lightBlueAccent),
               ),
               Spacer(),
             ]),
@@ -232,15 +238,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(60, 60)),
                       shape: MaterialStateProperty.all(CircleBorder(
-                          side: BorderSide(color: Colors.white, width: 2.0))),
+                          side: BorderSide(color: buttonbg, width: 2.0))),
                       backgroundColor: MaterialStateProperty.all(
-                          selectedSize == size
-                              ? Colors.blueGrey
-                              : Colors.black),
+                          selectedSize == size ? Colors.blueGrey : iconcolor),
                     ),
                     child: Text(
                       size,
-                      style: GoogleFonts.abhayaLibre(color: Colors.white),
+                      style: GoogleFonts.acme(color: Colors.black),
                     ),
                   ),
                 );
@@ -249,13 +253,13 @@ class _ProductDetailsState extends State<ProductDetails> {
             minheight,
             Text(
               "Product Details : ",
-              style: GoogleFonts.abhayaLibre(color: Colors.greenAccent),
+              style: GoogleFonts.acme(color: Colors.greenAccent),
             ),
             minheight,
             Text(
               args['details'].split("+").join("\n"),
-              style: GoogleFonts.abhayaLibre(
-                color: Colors.white,
+              style: GoogleFonts.acme(
+                color: fontcolor,
                 fontSize: 15,
               ),
             ),
@@ -270,10 +274,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Row(
           children: [
             Spacer(),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-              ),
+            MaterialButton(
+              color: buttonbg,
               onPressed: () async {
                 if (isCart == false) {
                   if (selectedSize.isEmpty) {
@@ -302,22 +304,12 @@ class _ProductDetailsState extends State<ProductDetails> {
               },
               child: Text(
                 isCart ? "Go to Cart" : "Add to Cart",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 18, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 18, color: buttonfont),
               ),
             ),
             Spacer(),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.disabled)) {
-                      return Colors.grey; // Disabled color
-                    }
-                    return Colors.blueGrey; // Enabled color
-                  },
-                ),
-              ),
+            MaterialButton(
+              color: args['stock'] == 0 ? Colors.grey : buttonbg,
               onPressed: args['stock'] == 0
                   ? null
                   : () {
@@ -345,12 +337,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                               'product_id': args['product_id'],
                               'product_name': args['product_name'],
                               'description': args['description'],
+                              'category': args['category'],
                               'details': args['details'],
                               'totalPrice': args['price'],
                               'size': selectedSize,
                               'address': addresslist.isEmpty
                                   ? "Add+New+Address+for delivery"
                                   : addresslist[0],
+                              'phone': phonelist.isEmpty ? " " : phonelist[0],
                               'userId':
                                   FirebaseAuth.instance.currentUser!.email,
                             });
@@ -360,7 +354,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 args['stock'] == 0 ? "Out of Stock" : "BUY NOW",
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.white,
+                  color: args['stock'] == 0 ? Colors.grey : buttonfont,
                 ),
               ),
             ),

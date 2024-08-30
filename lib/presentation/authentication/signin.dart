@@ -88,28 +88,28 @@ class _SignInScreenState extends State<SignInScreen> {
             Spacer(),
             Text(
               "We Missed You",
-              style: GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+              style: GoogleFonts.acme(fontSize: 25, color: fontcolor),
             ),
             minheight,
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextField(
                 controller: email,
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   isDense: true,
                   labelText: "Email",
                   hintText: "Enter email address",
-                  hintStyle: GoogleFonts.abhayaLibre(color: Colors.white),
-                  labelStyle: GoogleFonts.abhayaLibre(color: Colors.white),
+                  hintStyle: GoogleFonts.acme(color: fontcolor),
+                  labelStyle: GoogleFonts.acme(color: fontcolor),
                   errorText: errormessage.isEmpty ? null : errormessage,
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.blueGrey)),
+                      borderSide: BorderSide(color: buttonbg)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Colors.blueGrey)),
+                      borderSide: BorderSide(color: buttonbg)),
                 ),
                 onChanged: validateEmail,
               ),
@@ -119,7 +119,7 @@ class _SignInScreenState extends State<SignInScreen> {
               padding: const EdgeInsets.all(15.0),
               child: TextField(
                 controller: pass,
-                style: GoogleFonts.abhayaLibre(color: Colors.white),
+                style: GoogleFonts.acme(color: fontcolor),
                 obscureText: _obscureText,
                 keyboardType: TextInputType.visiblePassword,
                 cursorColor: Colors.blueGrey,
@@ -128,14 +128,14 @@ class _SignInScreenState extends State<SignInScreen> {
                     labelText: "Password",
                     hintText: "Enter a strong password",
                     isDense: true,
-                    hintStyle: GoogleFonts.abhayaLibre(color: Colors.white),
-                    labelStyle: GoogleFonts.abhayaLibre(color: Colors.white),
+                    hintStyle: GoogleFonts.acme(color: fontcolor),
+                    labelStyle: GoogleFonts.acme(color: fontcolor),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(color: buttonbg)),
                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color: Colors.white)),
+                        borderSide: BorderSide(color: buttonbg)),
                     suffixIcon: IconButton(
                       icon: Icon(_obscureText
                           ? Icons.visibility
@@ -156,27 +156,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         )),
                     child: Text(
                       "forgot password?",
-                      style: GoogleFonts.abhayaLibre(
-                          color: Colors.lightBlueAccent),
+                      style: GoogleFonts.acme(color: Colors.lightBlueAccent),
                     )),
               ],
             ),
             minheight,
             minheight,
-            ElevatedButton(
+            MaterialButton(
               onPressed: () {
                 validateEmail(email.text);
                 if (errormessage.isEmpty) {
                   usersignin();
                 }
               },
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                  minimumSize: MaterialStateProperty.all(Size(200, 50))),
+              color: buttonbg,
               child: Text(
                 "Sign In",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 25, color: buttonfont),
               ),
             ),
             Spacer(),

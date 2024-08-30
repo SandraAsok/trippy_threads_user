@@ -90,31 +90,29 @@ class WelcomeScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage("assets/welcome.webp"),
-          fit: BoxFit.cover,
+          image: AssetImage("assets/welcome.png"),
+          fit: BoxFit.contain,
         )),
         child: Column(
           children: [
-            SizedBox(height: 300),
+            SizedBox(height: 100),
             Text(
               "Trippy\t\tThreads",
-              style: TextStyle(
+              style: GoogleFonts.acme(
                   shadows: [
                     Shadow(
                       color: Colors.blueGrey,
-                      blurRadius: 10,
+                      blurRadius: 20,
                       offset: Offset(0, 10),
                     ),
                   ],
-                  fontSize: 60,
+                  fontSize: 50,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 50),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
-                  minimumSize: MaterialStateProperty.all(Size(200, 50))),
+            Spacer(),
+            MaterialButton(
+              color: Colors.white,
               onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -122,10 +120,10 @@ class WelcomeScreen extends StatelessWidget {
                   )),
               child: Text(
                 "GET STARTED",
-                style:
-                    GoogleFonts.abhayaLibre(fontSize: 25, color: Colors.white),
+                style: GoogleFonts.acme(fontSize: 20, color: Colors.black),
               ),
             ),
+            SizedBox(height: 100),
           ],
         ),
       ),
