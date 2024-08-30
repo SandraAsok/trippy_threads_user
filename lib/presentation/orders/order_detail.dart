@@ -22,13 +22,13 @@ class _OrderDetailState extends State<OrderDetail> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: bgcolor,
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          backgroundColor: Colors.black,
+          iconTheme: IconThemeData(color: buttonbg),
+          backgroundColor: bgcolor,
           title: Text(
             "Order Details",
-            style: GoogleFonts.acme(color: Colors.black),
+            style: GoogleFonts.acme(color: fontcolor),
           ),
         ),
         body: StreamBuilder<DocumentSnapshot>(
@@ -78,7 +78,7 @@ class _OrderDetailState extends State<OrderDetail> {
                               Text(
                                 snap['product_name'],
                                 style: GoogleFonts.acme(
-                                  color: Colors.black,
+                                  color: fontcolor,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -86,13 +86,13 @@ class _OrderDetailState extends State<OrderDetail> {
                               minheight,
                               Text(
                                 snap['description'],
-                                style: GoogleFonts.acme(color: Colors.black),
+                                style: GoogleFonts.acme(color: fontcolor),
                               ),
                               minheight,
                               Text(
                                 "₹ ${snap['totalPrice']} /-",
                                 style: GoogleFonts.acme(
-                                  color: Colors.black,
+                                  color: fontcolor,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -179,28 +179,72 @@ class _OrderDetailState extends State<OrderDetail> {
                         ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.black),
-                          ),
-                          onPressed: () {
-                            showDatePicker(
-                              context: context,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now().add(Duration(days: 7)),
-                            );
-                          },
-                          child: Text(
-                            "Change Delivery Date ",
-                            style: GoogleFonts.acme(
-                                color: Colors.black, fontSize: 16),
-                          ),
-                        ),
-                      ],
-                    ),
+                    snap['track'] != "cancelled"
+                        ? Row(
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(buttonbg),
+                                ),
+                                onPressed: () {
+                                  showDatePicker(
+                                    context: context,
+                                    firstDate: DateTime.now(),
+                                    lastDate:
+                                        DateTime.now().add(Duration(days: 7)),
+                                  );
+                                },
+                                child: Text(
+                                  "Change Delivery Date ",
+                                  style: GoogleFonts.acme(
+                                      color: buttonfont, fontSize: 16),
+                                ),
+                              ),
+                              Spacer(),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(buttonbg),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      content: Text(
+                                          "are you really wanna cancel your order ?"),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: Text("No")),
+                                        TextButton(
+                                            onPressed: () async {
+                                              await FirebaseFirestore.instance
+                                                  .collection('orders')
+                                                  .doc(widget.orderId)
+                                                  .update(
+                                                      {'track': "cancelled"});
+                                              setState(() {});
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("Yes")),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "Cancel your Order",
+                                  style: GoogleFonts.acme(
+                                      color: buttonfont, fontSize: 16),
+                                ),
+                              ),
+                              Spacer(),
+                            ],
+                          )
+                        : SizedBox(
+                            height: 10,
+                          )
                   ],
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:trippy_threads/core/utilities.dart';
 import 'package:trippy_threads/presentation/orders/order_detail.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: bgcolor,
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection('orders')
@@ -46,22 +47,29 @@ class _OrderScreenState extends State<OrderScreen> {
                       .format(placedDate.add(Duration(days: 7)));
 
                   return ListTile(
+                    tileColor: buttonbg,
                     style: ListTileStyle.list,
                     leading: Container(
                       height: 80,
                       width: 80,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(snap['image'][0])),
-                          border: Border.all(color: Colors.black)),
+                        image: DecorationImage(
+                            fit: BoxFit.fitHeight,
+                            image: NetworkImage(snap['image'][0])),
+                      ),
                     ),
                     title: Text(
-                      "Expected delivery on $expectedDeliveryDate",
-                      style: GoogleFonts.acme(color: Colors.greenAccent),
+                      snap['track'] != "cancelled"
+                          ? "Expected delivery on $expectedDeliveryDate"
+                          : "cancelled !",
+                      style: GoogleFonts.acme(
+                          color: snap['track'] != "cancelled"
+                              ? Colors.green
+                              : Colors.red),
                     ),
                     subtitle: Text(
                       snap['product_name'],
-                      style: GoogleFonts.acme(color: Colors.black),
+                      style: GoogleFonts.acme(color: buttonfont),
                     ),
                     trailing: IconButton(
                         onPressed: () {
@@ -74,7 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
                         },
                         icon: Icon(
                           Icons.navigate_next,
-                          color: Colors.black,
+                          color: buttonfont,
                         )),
                   );
                 },

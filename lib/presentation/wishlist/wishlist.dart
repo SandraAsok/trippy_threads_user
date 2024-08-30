@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trippy_threads/core/utilities.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({super.key});
@@ -22,11 +23,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: bgcolor,
           automaticallyImplyLeading: false,
           title: Text(
             "Wishlist & Collections",
-            style: GoogleFonts.acme(color: Colors.black),
+            style: GoogleFonts.acme(color: fontcolor),
           ),
         ),
         backgroundColor: Colors.black,
@@ -71,7 +72,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                             height: 100,
                             width: 500,
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
+                                border: Border.all(color: buttonbg),
+                                color: buttonbg,
                                 borderRadius: BorderRadius.circular(25)),
                             child: Row(
                               children: [
@@ -97,15 +99,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                           style: TextStyle(
                                               overflow: TextOverflow.ellipsis,
                                               color: Colors.black,
-                                              fontSize: 20),
+                                              fontSize: 17),
                                         ),
-                                        // Text(
-                                        //   "₹ ${snap['price']}/-",
-                                        //   style: TextStyle(
-                                        //       overflow: TextOverflow.ellipsis,
-                                        //       color: Colors.black,
-                                        //       fontSize: 20),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -118,9 +113,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       IconButton.filled(
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.black),
+                                  MaterialStateProperty.all(bgcolor),
                               side: MaterialStateProperty.all(
-                                  BorderSide(color: Colors.black))),
+                                  BorderSide(color: buttonbg))),
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -147,7 +142,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                           },
                           icon: Icon(
                             Icons.favorite,
-                            color: Colors.black,
+                            color: iconcolor,
                           )),
                     ],
                   );

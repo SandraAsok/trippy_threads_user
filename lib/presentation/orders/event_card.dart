@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trippy_threads/core/utilities.dart';
 
 class EventCard extends StatelessWidget {
   final bool isPast;
@@ -16,8 +17,12 @@ class EventCard extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: Text(
           text,
-          style:
-              GoogleFonts.acme(color: isPast ? Colors.black : Colors.blueGrey),
+          style: GoogleFonts.acme(
+              color: text == "Cancelled"
+                  ? Colors.red
+                  : isPast
+                      ? fontcolor
+                      : Colors.blueGrey),
         ),
       ),
     );

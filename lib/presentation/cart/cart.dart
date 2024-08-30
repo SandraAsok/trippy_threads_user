@@ -106,13 +106,13 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: bgcolor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.black,
+        backgroundColor: bgcolor,
         title: Text(
           "Cart & Collections",
-          style: GoogleFonts.acme(color: Colors.black),
+          style: GoogleFonts.acme(color: fontcolor),
         ),
       ),
       body: StreamBuilder(
@@ -200,9 +200,9 @@ class _CartScreenState extends State<CartScreen> {
                                     height: 100,
                                     width: 500,
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
+                                        border: Border.all(color: buttonbg),
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: buttonbg),
                                     child: Row(
                                       children: [
                                         Padding(
@@ -231,8 +231,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   style: TextStyle(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    color: Colors.black,
-                                                    fontSize: 20,
+                                                    color: buttonfont,
+                                                    fontSize: 17,
                                                   ),
                                                 ),
                                                 Text(
@@ -242,8 +242,8 @@ class _CartScreenState extends State<CartScreen> {
                                                   style: TextStyle(
                                                     overflow:
                                                         TextOverflow.ellipsis,
-                                                    color: Colors.black,
-                                                    fontSize: 20,
+                                                    color: buttonfont,
+                                                    fontSize: 16,
                                                   ),
                                                 ),
                                               ],
@@ -254,12 +254,12 @@ class _CartScreenState extends State<CartScreen> {
                                           minwidth,
                                           minwidth,
                                           DropdownButton<String>(
-                                            dropdownColor: Colors.black,
-                                            iconEnabledColor: Colors.black,
+                                            dropdownColor: buttonbg,
+                                            iconEnabledColor: buttonfont,
                                             value: selectedItems[itemId] ?? "1",
                                             style: GoogleFonts.acme(
-                                                fontSize: 25,
-                                                color: Colors.black),
+                                                fontSize: 20,
+                                                color: buttonfont),
                                             items:
                                                 quantities.map((String value) {
                                               return DropdownMenuItem<String>(
@@ -296,7 +296,7 @@ class _CartScreenState extends State<CartScreen> {
                                     backgroundColor:
                                         MaterialStateProperty.all(Colors.black),
                                     side: MaterialStateProperty.all(
-                                        BorderSide(color: Colors.black))),
+                                        BorderSide(color: buttonbg))),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
@@ -326,7 +326,7 @@ class _CartScreenState extends State<CartScreen> {
                                 },
                                 icon: Icon(
                                   Icons.delete,
-                                  color: Colors.black,
+                                  color: iconcolor,
                                 ),
                               ),
                             ],

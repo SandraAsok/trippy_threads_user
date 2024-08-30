@@ -208,16 +208,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: GridView.builder(
+                height: MediaQuery.of(context).size.height * 2,
+                child: ListView.builder(
                   itemCount: gridimg.length,
                   physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.9,
-                    crossAxisSpacing: 20.0,
-                    mainAxisSpacing: 20.0,
-                  ),
+                  // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 2,
+                  //   childAspectRatio: 0.9,
+                  //   crossAxisSpacing: 20.0,
+                  //   mainAxisSpacing: 20.0,
+                  // ),
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () => Navigator.push(
@@ -227,17 +227,27 @@ class _HomeScreenState extends State<HomeScreen> {
                               item: gridtext[index],
                             ),
                           )),
-                      child: Container(
-                        height: 350,
-                        decoration: BoxDecoration(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 150,
+                          width: 300,
+                          decoration: BoxDecoration(
                             image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(gridimg[index]))),
-                        child: Center(
-                          child: Text(
-                            gridtext[index].toString().toUpperCase(),
-                            style: GoogleFonts.acme(
-                                fontSize: 25, color: fontcolor),
+                                fit: BoxFit.cover,
+                                image: NetworkImage(gridimg[index])),
+                          ),
+                          child: Center(
+                            child: Card(
+                              color: Colors.transparent,
+                              shadowColor: Colors.grey,
+                              elevation: 5,
+                              child: Text(
+                                gridtext[index].toString().toUpperCase(),
+                                style: GoogleFonts.acme(
+                                    fontSize: 25, color: fontcolor),
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:trippy_threads/core/utilities.dart';
 import 'package:trippy_threads/presentation/orders/event_card.dart';
 
 class TimelineTileWidget extends StatefulWidget {
@@ -27,13 +28,17 @@ class _TimelineTileWidgetState extends State<TimelineTileWidget> {
         hasIndicator: true,
         isFirst: widget.isFirst,
         isLast: widget.isLast,
-        beforeLineStyle:
-            LineStyle(color: widget.isPast ? Colors.green : Colors.grey),
+        beforeLineStyle: LineStyle(
+            color: widget.text == "Cancelled"
+                ? Colors.red
+                : widget.isPast
+                    ? Colors.green
+                    : Colors.grey),
         indicatorStyle: IndicatorStyle(
-            color: widget.isPast ? Colors.black : Colors.blueGrey,
+            color: widget.isPast ? fontcolor : Colors.blueGrey,
             width: 15,
-            iconStyle: IconStyle(
-                iconData: Icons.done, color: Colors.black, fontSize: 16)),
+            iconStyle:
+                IconStyle(iconData: Icons.done, color: black, fontSize: 16)),
         endChild: EventCard(
           isPast: widget.isPast,
           text: widget.text,
