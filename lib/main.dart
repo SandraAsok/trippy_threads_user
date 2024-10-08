@@ -112,15 +112,34 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Spacer(),
             MaterialButton(
+              elevation: 10,
               color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
               onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SignUpScreen(),
-                  )),
-              child: Text(
-                "GET STARTED",
-                style: GoogleFonts.acme(fontSize: 20, color: Colors.black),
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignUpScreen(),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "GET STARTED",
+                    style: GoogleFonts.acme(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Colors.black,
+                  ),
+                ],
               ),
             ),
             SizedBox(height: 100),

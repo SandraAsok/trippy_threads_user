@@ -239,13 +239,46 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Center(
                             child: Card(
-                              color: Colors.transparent,
-                              shadowColor: Colors.grey,
-                              elevation: 5,
-                              child: Text(
-                                gridtext[index].toString().toUpperCase(),
-                                style: GoogleFonts.acme(
-                                    fontSize: 25, color: fontcolor),
+                              elevation: 6,
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(gridimg[index]),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                2,
+                                        color: Colors.black.withOpacity(0.6),
+                                        padding: EdgeInsets.all(8),
+                                        child: Text(
+                                          gridtext[index]
+                                              .toString()
+                                              .toUpperCase(),
+                                          style: GoogleFonts.acme(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
