@@ -43,8 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
                   final snap = snapshot.data!.docs[index];
                   DateTime placedDate =
                       DateFormat('dd/MM/yyyy').parse(snap['placed_date']);
-                  final expectedDeliveryDate = DateFormat('dd/MM/yyyy')
-                      .format(placedDate.add(Duration(days: 7)));
+                  final expectedDeliveryDate = snap['expected'];
 
                   return ListTile(
                     tileColor: buttonbg,

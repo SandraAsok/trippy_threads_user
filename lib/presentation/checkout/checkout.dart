@@ -184,6 +184,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               'placed_date': outputFormat.format(DateTime.now()),
               'userId': userId,
               'track': "pending",
+              'expected': DateFormat('dd/MM/yyyy')
+                  .format(DateTime.now().add(Duration(days: 7)))
             });
 
             await updateStock(); // Update stock after placing the order
@@ -272,7 +274,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         width: MediaQuery.of(context).size.width / 1.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black),
+                            color: Colors.white),
                         child: Center(
                           child: Text(
                             args['address'].split("+").join("\n"),
@@ -302,7 +304,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Text(
                           "can you recieve deliveries on weekends?",
                           style: GoogleFonts.acme(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 20, color: Colors.white),
                         ),
                         Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -313,7 +315,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.black),
+                                      side: BorderSide(color: Colors.white),
                                       value: isSaturday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -324,7 +326,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Text(
                                       "Saturday",
                                       style: GoogleFonts.acme(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -333,7 +335,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.black),
+                                      side: BorderSide(color: Colors.white),
                                       value: isSunday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -344,7 +346,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     Text(
                                       "Sunday",
                                       style: GoogleFonts.acme(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -356,14 +358,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "SELECT PAYMENT METHOD",
-                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 RadioListTile(
                   value: 'Pay with Razorpay',
                   title: Text(
                     "pay with Razorpay",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -377,7 +379,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   value: 'Cash on Delivery',
                   title: Text(
                     "cash on Delivery",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -391,7 +393,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     "ORDER SUMMARY",
-                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 Padding(
@@ -401,13 +403,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Text(
                         "Total Price",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                       Spacer(),
                       Text(
                         ": ₹ ${args['totalPrice']} /-",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                     ],
                   ),
@@ -421,7 +423,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.red),
                       ),
                       Spacer(),
@@ -430,7 +432,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.red),
                       ),
                     ],
@@ -444,7 +446,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Text(
                         "Order Total",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                       Spacer(),
                       Text(
@@ -452,7 +454,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ? "₹ ${args['totalPrice']} /-"
                             : ": ₹ ${int.parse(args['totalPrice']) + 50} /-",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                     ],
                   ),

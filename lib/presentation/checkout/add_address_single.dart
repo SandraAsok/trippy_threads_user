@@ -32,7 +32,7 @@ class _AddAddressSingleState extends State<AddAddressSingle> {
     try {
       await FirebaseFirestore.instance.collection('address').add({
         'address':
-            "${name.text}+${contact.text}+${house.text}(H)+${street.text}+${city.text}+${district.text}+${pincode.text}",
+            "${name.text.toLowerCase()}+${contact.text.toLowerCase()}+${house.text.toLowerCase()}(H)+${street.text.toLowerCase()}+${city.text.toLowerCase()}+${district.text.toLowerCase()}+${pincode.text.toLowerCase()}",
         'userId': FirebaseAuth.instance.currentUser!.email,
         'phone': contact.text,
       });

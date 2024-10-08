@@ -100,6 +100,8 @@ class _SingleCheckoutState extends State<SingleCheckout> {
           'userId': FirebaseAuth.instance.currentUser!.email,
           'phone': args['phone'],
           'track': "pending",
+          'expected': DateFormat('dd/MM/yyyy')
+              .format(DateTime.now().add(Duration(days: 7)))
         });
         Navigator.push(
             context,
