@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -77,6 +79,22 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  Future<void> _resetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email.text);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Password reset link sent to ${email.text}"),
+        backgroundColor: Colors.green,
+      ));
+    } catch (e) {
+      log("Error resetting password: $e");
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error: Unable to send reset email"),
+        backgroundColor: Colors.red,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,6 +163,13 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             minheight,
+            TextButton(
+              onPressed: _resetPassword,
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
             minheight,
             Row(
               children: [
