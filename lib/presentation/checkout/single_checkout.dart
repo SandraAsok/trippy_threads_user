@@ -175,7 +175,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         width: MediaQuery.of(context).size.width / 1.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.black),
+                            color: Colors.white),
                         child: Center(
                           child: Text(
                             args['address'].split("+").join("\n"),
@@ -213,7 +213,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         Text(
                           "Please select the quantity you needed ?",
                           style: GoogleFonts.acme(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 20, color: Colors.white),
                         ),
                         Row(
                           children: [
@@ -221,17 +221,17 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                             Text(
                               "select here => ",
                               style: GoogleFonts.acme(
-                                  fontSize: 20, color: Colors.black),
+                                  fontSize: 20, color: Colors.white),
                             ),
                             minwidth,
                             minwidth,
                             minwidth,
                             DropdownButton<String>(
-                              dropdownColor: Colors.black,
-                              iconEnabledColor: Colors.black,
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.white,
                               value: quantity,
                               style: GoogleFonts.acme(
-                                  fontSize: 25, color: Colors.black),
+                                  fontSize: 25, color: Colors.white),
                               items: items.map((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -250,7 +250,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         Text(
                           "can you recieve deliveries on weekends?",
                           style: GoogleFonts.acme(
-                              fontSize: 20, color: Colors.black),
+                              fontSize: 20, color: Colors.white),
                         ),
                         Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -262,7 +262,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.black),
+                                      side: BorderSide(color: Colors.white),
                                       value: isSaturday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -273,13 +273,13 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     Text(
                                       "Saturday",
                                       style: GoogleFonts.acme(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                     Spacer(),
                                     Checkbox(
                                       fillColor: MaterialStateProperty.all(
                                           Colors.black),
-                                      side: BorderSide(color: Colors.black),
+                                      side: BorderSide(color: Colors.white),
                                       value: isSunday,
                                       onChanged: (bool? value) {
                                         setState(() {
@@ -290,7 +290,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                                     Text(
                                       "Sunday",
                                       style: GoogleFonts.acme(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: Colors.white),
                                     ),
                                     Spacer(),
                                   ],
@@ -303,14 +303,14 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     "SELECT PAYMENT METHOD",
-                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 RadioListTile(
                   value: 'Pay with Razorpay',
                   title: Text(
                     "pay with Razorpay",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -324,7 +324,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   value: 'Cash on Delivery',
                   title: Text(
                     "cash on Delivery",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.white),
                   ),
                   groupValue: payment,
                   onChanged: (value) {
@@ -338,7 +338,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                   padding: const EdgeInsets.all(10.0),
                   child: Text(
                     "ORDER SUMMARY",
-                    style: GoogleFonts.acme(color: Colors.black, fontSize: 17),
+                    style: GoogleFonts.acme(color: Colors.white, fontSize: 17),
                   ),
                 ),
                 Padding(
@@ -348,13 +348,13 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       Text(
                         "Total Price",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                       Spacer(),
                       Text(
                         ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity)} /-",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                     ],
                   ),
@@ -368,7 +368,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.red),
                       ),
                       Spacer(),
@@ -377,7 +377,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                         style: GoogleFonts.acme(
                             fontSize: 18,
                             color: paymentmethod == "razorpay"
-                                ? Colors.black
+                                ? Colors.white
                                 : Colors.red),
                       ),
                     ],
@@ -391,7 +391,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                       Text(
                         "Order Total",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                       Spacer(),
                       Text(
@@ -399,7 +399,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                             ? "₹ ${args['totalPrice']} /-"
                             : ": ₹ ${int.parse(args['totalPrice']) * int.parse(quantity) + 50} /-",
                         style:
-                            GoogleFonts.acme(fontSize: 18, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 18, color: Colors.white),
                       ),
                     ],
                   ),
@@ -447,7 +447,7 @@ class _SingleCheckoutState extends State<SingleCheckout> {
                             ? "Proceed To Pay"
                             : "Place Order",
                         style:
-                            GoogleFonts.acme(fontSize: 20, color: Colors.black),
+                            GoogleFonts.acme(fontSize: 20, color: Colors.white),
                       ),
                     ),
                   ),
