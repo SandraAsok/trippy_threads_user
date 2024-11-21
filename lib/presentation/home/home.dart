@@ -13,7 +13,9 @@ import 'package:trippy_threads/main.dart';
 import 'package:trippy_threads/presentation/cart/cart.dart';
 import 'package:trippy_threads/presentation/detail/productlist.dart';
 import 'package:trippy_threads/presentation/orders/orders.dart';
+import 'package:trippy_threads/presentation/other/popup.dart';
 import 'package:trippy_threads/presentation/wishlist/wishlist.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -118,53 +120,116 @@ class _HomeScreenState extends State<HomeScreen> {
             Divider(),
             Divider(),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          SettingPopup(mdFilename: 'privacypolicy.md'),
+                    ));
+              },
               leading: Icon(Icons.privacy_tip, color: iconcolor, size: 20),
               title: Text("Privacy Policy",
                   style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          SettingPopup(mdFilename: 'terms.md'),
+                    ));
+              },
               leading: Icon(Icons.policy, color: iconcolor, size: 20),
               title: Text("Terms and Conditions",
                   style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("About"),
+                      content: const Text(
+                        "Unleash your creativity with our\nvibrant collection of psychedelic clothing!\nShop unique, colorful designs, and\nbold patterns that let you\nexpress yourself like never before.\nEnjoy seamless navigation,\nsecure checkout,and exclusive deals.\nTransform your wardrobe today!",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Ok"))
+                      ],
+                    );
+                  },
+                );
+              },
               leading: Icon(Icons.remove_red_eye, color: iconcolor, size: 20),
               title: Text("About",
                   style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             Divider(),
-            Divider(),
+            // Divider(),
+            // ListTile(
+            //   onTap: () {},
+            //   leading: Icon(Icons.settings, color: iconcolor),
+            //   title:
+            //       Text("Settings", style: GoogleFonts.acme(color: fontcolor)),
+            // ),
             ListTile(
-              onTap: () {},
-              leading: Icon(Icons.settings, color: iconcolor),
-              title:
-                  Text("Settings", style: GoogleFonts.acme(color: fontcolor)),
-            ),
-            ListTile(
-              onTap: () {},
+              onTap: () async {
+                final String email_address = "sandraashokchellan@gmail.com";
+                final String subject = "Any queries? ";
+                final Uri email_launchUri = Uri(
+                    scheme: 'mailto',
+                    path: email_address,
+                    queryParameters: {
+                      'subject': subject,
+                    });
+
+                if (await canLaunchUrl(email_launchUri)) {
+                  await launchUrl(email_launchUri);
+                }
+              },
               leading: Icon(Icons.help_center, color: iconcolor, size: 20),
               title: Text("Help Center",
                   style: GoogleFonts.acme(color: fontcolor, fontSize: 15)),
             ),
             ListTile(
               onTap: () async {
-                try {
-                  await FirebaseAuth.instance.signOut();
-                  final SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  preferences.setBool('islogged', false);
-                  setState(() {});
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WelcomeScreen(),
-                      ));
-                } catch (e) {
-                  log('$e');
-                }
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text("About"),
+                      content: Text("Do you want to logout\nthis account?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("No")),
+                        TextButton(
+                            onPressed: () async {
+                              try {
+                                await FirebaseAuth.instance.signOut();
+                                final SharedPreferences preferences =
+                                    await SharedPreferences.getInstance();
+                                preferences.setBool('islogged', false);
+                                setState(() {});
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WelcomeScreen(),
+                                    ));
+                              } catch (e) {
+                                log('$e');
+                              }
+                            },
+                            child: const Text("Yes")),
+                      ],
+                    );
+                  },
+                );
               },
               leading: Icon(Icons.logout, color: iconcolor, size: 20),
               title: Text("Log out",
